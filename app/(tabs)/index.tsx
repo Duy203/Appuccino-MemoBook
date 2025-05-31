@@ -21,7 +21,12 @@ export default function Home() {
           <Button title="Group Content Screen!" />
         </Link>
       </View>
-
+    // Sean added Photo Submission Screen section
+    <View style={{padding: 20}}>
+      <Link href="/PhotoSubmissionScreen" asChild>
+        <Button title="Photo Submission Screen"/>
+      </Link>
+    </View>
       <View style={{ marginTop: 20 }}>
         <Button
           title="Logout"
