@@ -1,13 +1,13 @@
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
-  View,
+  FlatList,
+  StyleSheet,
   Text,
   TextInput,
-  FlatList,
   TouchableOpacity,
-  StyleSheet,
+  View,
 } from 'react-native';
-import { useRouter } from 'expo-router';
 
 type Group = {
   id: string;
@@ -32,7 +32,7 @@ export default function HomePage() {
 
   const goToGroup = (groupId: string) => {
     router.push({
-      pathname: '/group/[id]',
+      pathname: '../group/[id]',
       params: { id: groupId },
     });
   };
