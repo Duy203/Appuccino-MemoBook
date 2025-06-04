@@ -1,71 +1,79 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-    Dimensions,
-    FlatList,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Dimensions,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 
 type Post = {
   id: string;
-  user: string;
-  location: string;
-  caption: string;
-  description: string;
+  user?: string;
+  location?: string;
+  rating: number;
 };
 
-const data: Post[] = [
-  {
-    id: '1',
-    user: 'Jon Doe',
-    location: 'Location',
-    caption: 'Caption',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor',
-  },
-  {
-    id: '2',
-    user: 'Jane Doe',
-    location: 'location',
-    caption: 'Caption',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor',
-  },
-];
+const initialData: Post[] = Array.from({ length: 6 }, (_, index) => ({
+  id: (index + 1).toString(),
+  user: '',
+  location: '',
+  rating: 0,
+}));
 
 const GroupContentScreen = () => {
+  const [data, setData] = useState<Post[]>(initialData);
+
+  const handleRate = (postId: string, rating: number) => {
+    const updatedData = data.map((post) =>
+      post.id === postId ? { ...post, rating } : post
+    );
+    setData(updatedData);
+  };
+
+  const renderStars = (rating: number, postId: string) => {
+    return (
+      <View style={styles.starRow}>
+        {[1, 2, 3, 4, 5].map((star) => (
+          <TouchableOpacity
+            key={star}
+            onPress={() => handleRate(postId, star)}
+          >
+            <Text style={star <= rating ? styles.filledStar : styles.emptyStar}>
+              ★
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+    );
+  };
+
   const renderPost = ({ item }: { item: Post }) => (
     <View style={styles.card}>
       <View style={styles.header}>
-        <View style={styles.avatar}>
-          <Text style={styles.avatarText}>A</Text>
-        </View>
+        <View style={styles.avatar} /> {/* Blank avatar */}
         <View>
-          <Text style={styles.user}>{item.user}</Text>
-          <Text style={styles.location}>{item.location}</Text>
+          <Text style={styles.user}>{item.user || 'Anonymous'}</Text>
+          <Text style={styles.location}>{item.location || 'Unknown location'}</Text>
         </View>
       </View>
 
       <View style={styles.imagePlaceholder} />
 
       <View style={styles.textBlock}>
-        <Text style={styles.caption}>{item.caption}</Text>
-        <Text style={styles.description}>{item.description}</Text>
-        <View style={styles.buttons}>
-          <TouchableOpacity style={styles.buttonOutline}>
-            <Text style={styles.outlineText}>Up Vote</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonFilled}>
-            <Text style={styles.buttonText}>Like</Text>
-          </TouchableOpacity>
-        </View>
+        <Text style={styles.rateLabel}>Rate:</Text>
+        {renderStars(item.rating, item.id)}
       </View>
     </View>
   );
 
   return (
     <View style={styles.container}>
-      <Text style={styles.groupTitle}>Group 1</Text>
+      <View style={styles.groupHeader}>
+        <Text style={styles.groupTitle}>Group 1</Text>
+        <Text style={styles.addTopic}>Add Topic on Page</Text>
+      </View>
       <FlatList
         data={data}
         renderItem={renderPost}
@@ -82,11 +90,19 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f2f2f2',
   },
+  groupHeader: {
+    paddingHorizontal: 16,
+    paddingTop: 16,
+    paddingBottom: 0,
+  },
   groupTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    padding: 16,
-    paddingBottom: 0,
+  },
+  addTopic: {
+    fontSize: 14,
+    color: '#6a1b9a',
+    marginTop: 4,
   },
   card: {
     backgroundColor: '#fff',
@@ -102,17 +118,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   avatar: {
-    backgroundColor: '#d1c4e9',
     width: 40,
     height: 40,
     borderRadius: 20,
     marginRight: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  avatarText: {
-    color: '#000',
-    fontWeight: 'bold',
+    backgroundColor: 'transparent', // blank instead of colored
   },
   user: {
     fontWeight: 'bold',
@@ -128,37 +138,23 @@ const styles = StyleSheet.create({
     padding: 12,
     backgroundColor: '#f6f6f6',
   },
-  caption: {
+  rateLabel: {
     fontWeight: '600',
     marginBottom: 4,
   },
-  description: {
-    color: '#666',
-    marginBottom: 10,
-  },
-  buttons: {
+  starRow: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    marginTop: 4,
   },
-  buttonOutline: {
-    borderWidth: 1,
-    borderColor: '#6a1b9a',
-    borderRadius: 20,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    marginRight: 10,
+  filledStar: {
+    color: '#FFD700',
+    fontSize: 20,
+    marginHorizontal: 2,
   },
-  outlineText: {
-    color: '#6a1b9a',
-  },
-  buttonFilled: {
-    backgroundColor: '#6a1b9a',
-    borderRadius: 20,
-    paddingHorizontal: 16,
-    paddingVertical: 6,
-  },
-  buttonText: {
-    color: '#fff',
+  emptyStar: {
+    color: '#cccccc',
+    fontSize: 20,
+    marginHorizontal: 2,
   },
 });
 
