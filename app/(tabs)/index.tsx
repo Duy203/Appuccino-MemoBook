@@ -59,11 +59,6 @@ export default function HomePage() {
         <Button title="Go to About Page" />
       </Link>
 
-      {/* Group Content Screen button */}
-      <Link href="../GroupContentScreen" asChild>
-        <Button title="Go to Group Content Screen Page!" />
-      </Link>
-
       {/* Search Bar */}
       <TextInput
         style={styles.searchBar}
