@@ -1,13 +1,13 @@
-import { useRouter, useLocalSearchParams } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import React from 'react';
 import {
-  View,
+  Dimensions,
+  StyleSheet,
   Text,
   TouchableOpacity,
-  StyleSheet,
-  Dimensions,
+  View,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 
 export default function GroupScreen() {
   const router = useRouter();
@@ -50,7 +50,13 @@ export default function GroupScreen() {
           <View style={styles.buttonRow}>
             <TouchableOpacity
               style={styles.outlineButton}
-              onPress={() => router.push(`/GroupContentScreen?id=${groupId}`)}
+              onPress={() =>
+                router.push({
+                  pathname: '/group/[id]/content',
+                  params: { id: groupId },
+                })
+              }
+
             >
               <Text style={styles.outlineButtonText}>View Submissions</Text>
             </TouchableOpacity>

@@ -1,3 +1,4 @@
+import { useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
 import {
   Dimensions,
@@ -23,6 +24,7 @@ const initialData: Post[] = Array.from({ length: 6 }, (_, index) => ({
 }));
 
 const GroupContentScreen = () => {
+  const { id } = useLocalSearchParams();
   const [data, setData] = useState<Post[]>(initialData);
 
   const handleRate = (postId: string, rating: number) => {
@@ -52,14 +54,16 @@ const GroupContentScreen = () => {
   const renderPost = ({ item }: { item: Post }) => (
     <View style={styles.card}>
       <View style={styles.header}>
-        <View style={styles.avatar} /> {/* Blank avatar */}
+        {/* FIXED: no self-closing View */}
+        <View style={styles.avatar}></View>
         <View>
           <Text style={styles.user}>{item.user || 'Anonymous'}</Text>
           <Text style={styles.location}>{item.location || 'Unknown location'}</Text>
         </View>
       </View>
 
-      <View style={styles.imagePlaceholder} />
+      {/* FIXED: no self-closing View */}
+      <View style={styles.imagePlaceholder}></View>
 
       <View style={styles.textBlock}>
         <Text style={styles.rateLabel}>Rate:</Text>
@@ -71,7 +75,7 @@ const GroupContentScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.groupHeader}>
-        <Text style={styles.groupTitle}>Group 1</Text>
+        <Text style={styles.groupTitle}>Group {id}</Text>
         <Text style={styles.addTopic}>Add Topic on Page</Text>
       </View>
       <FlatList
@@ -122,7 +126,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 20,
     marginRight: 12,
-    backgroundColor: 'transparent', // blank instead of colored
+    backgroundColor: 'transparent',
   },
   user: {
     fontWeight: 'bold',
