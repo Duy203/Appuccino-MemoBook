@@ -54,11 +54,6 @@ export default function HomePage() {
     <View style={{ flex: 1, padding: 20 }}>
       <Text style={{ fontSize: 24, marginBottom: 20 }}>Home Screen</Text>
 
-      {/* About Page button */}
-      <Link href="/about" asChild>
-        <Button title="Go to About Page" />
-      </Link>
-
       {/* Search Bar */}
       <TextInput
         style={styles.searchBar}
