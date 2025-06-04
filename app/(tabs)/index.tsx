@@ -33,7 +33,7 @@ export default function HomePage() {
 
   const goToGroup = (groupId: string) => {
     router.push({
-      pathname: '/group/[id]',
+      pathname: '../group/[id]',
       params: { id: groupId },
     });
   };
@@ -72,7 +72,7 @@ export default function HomePage() {
         onChangeText={setSearch}
       />
 
-      {/* Group List with Logout button as footer */}
+      {/* Group List */}
       <FlatList
         data={filteredGroups}
         keyExtractor={(item) => item.id}
@@ -80,13 +80,6 @@ export default function HomePage() {
         contentContainerStyle={{ paddingBottom: 100 }}
         ListFooterComponent={
           <View style={{ marginTop: 20 }}>
-            <Button
-              title="Logout"
-              color="red"
-              onPress={() => {
-                router.replace("/login");
-              }}
-            />
           </View>
         }
       />

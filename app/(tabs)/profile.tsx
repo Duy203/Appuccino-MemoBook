@@ -1,7 +1,7 @@
 import { Entypo, FontAwesome5, Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Button, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 export default function Profile() {
   const router = useRouter();
   return (
@@ -45,6 +45,17 @@ export default function Profile() {
         <Ionicons name="compass-sharp" size={24} color="black"/>
         <Text style={styles.menutext}>Explore</Text>
       </TouchableOpacity>
+
+      {/*Added logout button to Profile Screen */}
+      <View style={{ marginTop: 20 }}>
+        <Button
+          title="Logout"
+          color="red"
+          onPress={() => {
+            router.replace("/login");
+          }}
+        />
+      </View>
 
     </View>
   );
