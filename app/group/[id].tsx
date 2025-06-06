@@ -69,7 +69,7 @@ export default function GroupScreen() {
       </View>
 
       {/* Camera Button */}
-      <TouchableOpacity style={styles.cameraButton}>
+      <TouchableOpacity style={styles.cameraButton} onPress={() => router.push('/takephoto')}>
         <Ionicons name="camera-outline" size={30} color="#fff" />
       </TouchableOpacity>
     </View>
