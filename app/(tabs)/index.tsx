@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 //duy made some changes
+//Duy mader another changes
 
 type Group = {
   id: string;
