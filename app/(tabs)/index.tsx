@@ -1,7 +1,6 @@
-import { Link, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
-  Button,
   FlatList,
   StyleSheet,
   Text,
@@ -9,6 +8,8 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
+
+//duy made some changes
 
 type Group = {
   id: string;
