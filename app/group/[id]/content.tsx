@@ -1,3 +1,3 @@
-import GroupContentScreen from '../../screens/GroupContentScreen';
+import GroupContentScreen from "@/app/GroupContentScreen";
 
 export default GroupContentScreen;
