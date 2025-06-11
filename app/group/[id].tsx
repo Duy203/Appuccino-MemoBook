@@ -61,7 +61,15 @@ export default function GroupScreen() {
               <Text style={styles.outlineButtonText}>View Submissions</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.filledButton}>
+            <TouchableOpacity
+              style={styles.filledButton}
+              onPress={() =>
+                router.push({
+                  pathname: '/group/[id]/memoryscreen',
+                  params: { id: groupId },
+                })
+              }
+            >
               <Text style={styles.filledButtonText}>Memory Book</Text>
             </TouchableOpacity>
           </View>
