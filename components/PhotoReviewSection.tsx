@@ -1,65 +1,112 @@
 import { Fontisto } from '@expo/vector-icons';
+import axios from 'axios';
 import { CameraCapturedPicture } from 'expo-camera';
+import { router } from 'expo-router';
 import React from 'react';
-import { Image, SafeAreaView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import {
+    Alert,
+    Image,
+    SafeAreaView,
+    StyleSheet,
+    TouchableOpacity,
+    View
+} from 'react-native';
 
-const PhotoPreviewSection = ({
-    photo,
-    handleRetakePhoto
-}: {
-    photo: CameraCapturedPicture;
-    handleRetakePhoto: () => void;
-}) => (
-    <SafeAreaView style={styles.container}>
-        <View style={styles.box}>
-            <Image
-                style={styles.previewConatiner}
-                source={{uri: 'data:image/jpg;base64,' + photo.base64}}
-            />
-        </View>
+interface PhotoPreviewSectionProps {
+  photo: CameraCapturedPicture;
+  handleRetakePhoto: () => void;
+}
 
-        <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button} onPress={handleRetakePhoto}>
-                <Fontisto name='trash' size={36} color='black' />
-            </TouchableOpacity>
-        </View>
-    </SafeAreaView>
-);
+const API_URL = "http://10.8.10.183:3000";
 
-const styles = StyleSheet.create({
-    container:{
-        flex: 1,
-        backgroundColor: 'black',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    box: {
-        borderRadius: 15,
-        padding: 1,
-        width: '95%',
-        backgroundColor: 'darkgray',
-        justifyContent: 'center',
-        alignItems: "center",
-    },
-    previewConatiner: {
-        width: '95%',
-        height: '85%',
-        borderRadius: 15
-    },
-    buttonContainer: {
-        marginTop: '4%',
-        flexDirection: 'row',
-        justifyContent: "center",
-        width: '100%',
-    },
-    button: {
-        backgroundColor: 'gray',
-        borderRadius: 25,
-        padding: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
+const PhotoPreviewSection: React.FC<PhotoPreviewSectionProps> = ({
+  photo,
+  handleRetakePhoto,
+}) => {
+  const handleSavePhoto = async () => {
+    if (!photo?.base64) {
+      Alert.alert('Error', 'No base64 image data found.');
+      return;
     }
 
+    try {
+      const response = await axios.post(`${API_URL}/upload-photo`, {
+        image: photo.base64,
+      });
+
+      if (response.status === 200) {
+        Alert.alert('Success', 'Photo saved to MongoDB!',[
+            {
+                text: 'OK',
+                onPress : ()=> router.push('/PhotoGalleryScreen'),
+            }
+        ]);
+      } 
+      else {
+        Alert.alert('Error', 'Unexpected response from server.');
+      }
+    } catch (err) {
+      console.error(err);
+      Alert.alert('Upload Failed', 'Could not save the photo.');
+    }
+  };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.box}>
+        <Image
+          style={styles.previewContainer}
+          source={{ uri: 'data:image/jpg;base64,' + photo.base64 }}
+        />
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.button} onPress={handleRetakePhoto}>
+          <Fontisto name="trash" size={28} color="white" />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={handleSavePhoto}>
+          <Fontisto name="save" size={28} color="white" />
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'black',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  box: {
+    borderRadius: 15,
+    padding: 1,
+    width: '95%',
+    backgroundColor: 'darkgray',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  previewContainer: {
+    width: '95%',
+    height: '85%',
+    borderRadius: 15,
+    resizeMode: 'contain',
+  },
+  buttonContainer: {
+    marginTop: '4%',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '60%',
+  },
+  button: {
+    backgroundColor: 'gray',
+    borderRadius: 25,
+    padding: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
 
 export default PhotoPreviewSection;

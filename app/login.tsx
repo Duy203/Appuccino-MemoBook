@@ -1,11 +1,39 @@
+import axios from 'axios';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Text } from 'react-native';
+import { Alert, Button, StyleSheet, Text, TextInput, View } from 'react-native';
+
+
+//getting the URL
+const API_URL = "http://10.8.10.183:3000";
 
 export default function LoginScreen() {
   const router = useRouter();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  const handleLogin = async () => {
+    if (!username || !password){
+      Alert.alert('Missing Fields', 'Please enter both username and password');
+      return;
+    }
+
+    try { 
+      const res = await axios.post(`${API_URL}/login`,{
+        username,
+        password,
+      });
+
+      if (res.status ===200){
+        Alert.alert('Welcome!', 'Login Sucessfull');
+        router.replace('/')
+      }
+
+    }
+    catch(err:any){
+      Alert.alert('Login Failed', err?.response?.data?.message || 'invalid credentials')
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -28,8 +56,8 @@ export default function LoginScreen() {
       />
 
       <View style={styles.buttonContainer}>
-        <Button title="Register" onPress={() => {}} />
-        <Button title="Sign In" onPress={() => router.replace('/')} />
+        <Button title="Register" onPress={() => router.push('/create')} />
+        <Button title="Sign In" onPress={handleLogin} />
       </View>
     </View>
   );
