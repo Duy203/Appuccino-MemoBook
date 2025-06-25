@@ -4,13 +4,14 @@ import { CameraCapturedPicture } from 'expo-camera';
 import { router } from 'expo-router';
 import React from 'react';
 import {
-    Alert,
-    Image,
-    SafeAreaView,
-    StyleSheet,
-    TouchableOpacity,
-    View
+  Alert,
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  TouchableOpacity,
+  View
 } from 'react-native';
+import { useUser } from '../contexts/UserContexts';
 
 interface PhotoPreviewSectionProps {
   photo: CameraCapturedPicture;
@@ -23,15 +24,24 @@ const PhotoPreviewSection: React.FC<PhotoPreviewSectionProps> = ({
   photo,
   handleRetakePhoto,
 }) => {
+  const {user}= useUser();
+
   const handleSavePhoto = async () => {
     if (!photo?.base64) {
       Alert.alert('Error', 'No base64 image data found.');
       return;
     }
+    if(!user?.username){
+      Alert.alert('Error', 'User not found in context')
+      return;
+    }
+
+    const cleanBase64 = photo.base64.replace(/\s/g, '');
 
     try {
       const response = await axios.post(`${API_URL}/upload-photo`, {
-        image: photo.base64,
+        image: cleanBase64,
+        username: user.username,
       });
 
       if (response.status === 200) {

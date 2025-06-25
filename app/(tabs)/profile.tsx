@@ -40,6 +40,12 @@ export default function Profile() {
         <Text style={styles.menutext}>Friends</Text>
       </TouchableOpacity>
 
+      {/*View All of the user photos */}
+      <TouchableOpacity style={styles.menuitem} onPress={()=> router.push("/my-photo")}>
+        <Ionicons name="image" size={24} color="black"/>
+        <Text style={styles.menutext}>All My Photos</Text>
+      </TouchableOpacity>
+
       <TouchableOpacity style={styles.menuitem}>
         <Entypo name="info-with-circle" size={24} color="black" />
         <Text style={styles.menutext}>About</Text>
