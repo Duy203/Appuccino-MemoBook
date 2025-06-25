@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Image, SafeAreaView, ScrollView, StyleSheet, Text } from 'react-native';
 
-const API_URL = 'http://10.8.10.183:3000'; // 🔁 Replace with your backend IP
+const API_URL = "http://10.0.0.216:3000"; // 🔁 Replace with your backend IP
 
 interface Photo {
   _id: string;

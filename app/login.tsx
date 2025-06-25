@@ -5,7 +5,7 @@ import { Alert, Button, StyleSheet, Text, TextInput, View } from 'react-native';
 
 
 //getting the URL
-const API_URL = "http://10.8.10.183:3000";
+const API_URL = "http://10.0.0.216:3000";
 
 export default function LoginScreen() {
   const router = useRouter();

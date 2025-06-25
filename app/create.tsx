@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { Alert, KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-const API_URL = "http://10.8.10.183:3000";
+const API_URL = "http://10.0.0.216:3000";
 export default function CreatePage(){
     const [username,setUserName] = useState('');
     const [password,setPassword] = useState('');
