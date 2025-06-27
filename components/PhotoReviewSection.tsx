@@ -18,7 +18,7 @@ interface PhotoPreviewSectionProps {
   handleRetakePhoto: () => void;
 }
 
-const API_URL = "http://10.0.0.216:3000";
+const API_URL = "http://192.168.2.2:3000";
 
 const PhotoPreviewSection: React.FC<PhotoPreviewSectionProps> = ({
   photo,

@@ -1,3 +1,5 @@
+import { Colors } from '@/constants/Colors';
+import { useColorScheme } from '@/hooks/useColorScheme';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
@@ -9,8 +11,9 @@ import {
   View
 } from 'react-native';
 
+
 //duy made some changes
-//Duy mader another changes
+//Duy made another changes
 
 type Group = {
   id: string;
@@ -28,6 +31,9 @@ const mockGroups = [
 export default function HomePage() {
   const router = useRouter();
   const [search, setSearch] = useState('');
+  const colorScheme = useColorScheme();
+  const theme = Colors[colorScheme ?? 'light'];
+
 
   const filteredGroups = mockGroups.filter(group =>
     group.name.toLowerCase().includes(search.toLowerCase())
@@ -53,8 +59,9 @@ export default function HomePage() {
   );
 
   return (
-    <View style={{ flex: 1, padding: 20 }}>
-      <Text style={{ fontSize: 24, marginBottom: 20 }}>Home Screen</Text>
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
+      <Text style={[styles.pageTitle, { color: theme.tint }]}>Home</Text>
+
 
       {/* Search Bar */}
       <TextInput
@@ -80,7 +87,15 @@ export default function HomePage() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, backgroundColor: '#fff' },
+  container: {
+    flex: 1,
+    padding: 20,
+  },
+  pageTitle: {
+    fontSize: 24,
+    marginBottom: 20,
+    fontWeight: '600',
+  },
   searchBar: {
     padding: 10,
     backgroundColor: '#f0f0f0',

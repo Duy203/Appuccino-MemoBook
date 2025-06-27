@@ -1,3 +1,5 @@
+import { Colors } from '@/constants/Colors';
+import { useColorScheme } from '@/hooks/useColorScheme';
 import { useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
 import {
@@ -26,6 +28,8 @@ const initialData: Post[] = Array.from({ length: 6 }, (_, index) => ({
 const GroupContentScreen = () => {
   const { id } = useLocalSearchParams();
   const [data, setData] = useState<Post[]>(initialData);
+  const colorScheme = useColorScheme();
+  const theme = Colors[colorScheme ?? 'light'];
 
   const handleRate = (postId: string, rating: number) => {
     const updatedData = data.map((post) =>
@@ -52,31 +56,33 @@ const GroupContentScreen = () => {
   };
 
   const renderPost = ({ item }: { item: Post }) => (
-    <View style={styles.card}>
-      <View style={styles.header}>
-        {/* FIXED: no self-closing View */}
-        <View style={styles.avatar}></View>
+    <View style={[styles.card, { backgroundColor: theme.card }]}>
+      <View style={[styles.header, { backgroundColor: theme.accent + '33' }]}>
+        <View style={[styles.avatar, { backgroundColor: theme.accent }]} />
         <View>
-          <Text style={styles.user}>{item.user || 'Anonymous'}</Text>
-          <Text style={styles.location}>{item.location || 'Unknown location'}</Text>
+          <Text style={[styles.user, { color: theme.text }]}>
+            {item.user || 'Anonymous'}
+          </Text>
+          <Text style={[styles.location, { color: theme.icon }]}>
+            {item.location || 'Unknown location'}
+          </Text>
         </View>
       </View>
 
-      {/* FIXED: no self-closing View */}
       <View style={styles.imagePlaceholder}></View>
 
-      <View style={styles.textBlock}>
-        <Text style={styles.rateLabel}>Rate:</Text>
+      <View style={[styles.textBlock, { backgroundColor: theme.background }]}>
+        <Text style={[styles.rateLabel, { color: theme.text }]}>Rate:</Text>
         {renderStars(item.rating, item.id)}
       </View>
     </View>
   );
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
       <View style={styles.groupHeader}>
-        <Text style={styles.groupTitle}>Group {id}</Text>
-        <Text style={styles.addTopic}>Add Topic on Page</Text>
+        <Text style={[styles.groupTitle, { color: theme.text }]}>Group {id}</Text>
+        <Text style={[styles.addTopic, { color: theme.tint }]}>Add Topic on Page</Text>
       </View>
       <FlatList
         data={data}
@@ -92,7 +98,6 @@ const GroupContentScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f2f2f2',
   },
   groupHeader: {
     paddingHorizontal: 16,
@@ -105,11 +110,9 @@ const styles = StyleSheet.create({
   },
   addTopic: {
     fontSize: 14,
-    color: '#6a1b9a',
     marginTop: 4,
   },
   card: {
-    backgroundColor: '#fff',
     borderRadius: 12,
     marginTop: 16,
     overflow: 'hidden',
@@ -118,7 +121,6 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     padding: 12,
-    backgroundColor: '#e0e0e0',
     alignItems: 'center',
   },
   avatar: {
@@ -126,13 +128,12 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 20,
     marginRight: 12,
-    backgroundColor: 'transparent',
   },
   user: {
     fontWeight: 'bold',
   },
   location: {
-    color: '#555',
+    fontSize: 12,
   },
   imagePlaceholder: {
     backgroundColor: '#dcdcdc',
@@ -140,7 +141,6 @@ const styles = StyleSheet.create({
   },
   textBlock: {
     padding: 12,
-    backgroundColor: '#f6f6f6',
   },
   rateLabel: {
     fontWeight: '600',

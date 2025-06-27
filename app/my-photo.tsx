@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text } from 'react-native';
 import { useUser } from '../contexts/UserContexts';
 
-const API_ROOT = 'http://10.0.0.216:3000';
+const API_ROOT = 'http://192.168.2.2:3000';
 
 export default function MyPhotosScreen() {
     interface Photo{

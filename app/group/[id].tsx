@@ -8,24 +8,28 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { useColorScheme } from '@/hooks/useColorScheme';
+import { Colors } from '@/constants/Colors';
 
 export default function GroupScreen() {
   const router = useRouter();
   const { id } = useLocalSearchParams();
   const groupId = typeof id === 'string' ? id : Array.isArray(id) ? id[0] : '';
+  const colorScheme = useColorScheme();
+  const theme = Colors[colorScheme ?? 'light'];
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
       {/* Group Card */}
-      <View style={styles.card}>
+      <View style={[styles.card, { backgroundColor: theme.card }]}>
         {/* Header */}
         <View style={styles.header}>
-          <View style={styles.avatar}>
+          <View style={[styles.avatar, { backgroundColor: theme.tabIconSelected }]}>
             <Text style={styles.avatarText}>A</Text>
           </View>
           <View>
-            <Text style={styles.groupName}>Group {groupId}</Text>
-            <Text style={styles.bioText}>Insert Bio</Text>
+            <Text style={[styles.groupName, { color: theme.text }]}>Group {groupId}</Text>
+            <Text style={[styles.bioText, { color: theme.icon }]}>Insert Bio</Text>
           </View>
         </View>
 
@@ -42,27 +46,26 @@ export default function GroupScreen() {
 
         {/* Group Info */}
         <View style={styles.info}>
-          <Text style={styles.topicTitle}>Group’s Daily Topic</Text>
-          <Text style={styles.topicDescription}>Topic Description</Text>
-          <Text style={styles.policies}>Group’s policies</Text>
+          <Text style={[styles.topicTitle, { color: theme.text }]}>Group’s Daily Topic</Text>
+          <Text style={[styles.topicDescription, { color: theme.icon }]}>Topic Description</Text>
+          <Text style={[styles.policies, { color: theme.icon }]}>Group’s policies</Text>
 
           {/* Buttons */}
           <View style={styles.buttonRow}>
             <TouchableOpacity
-              style={styles.outlineButton}
+              style={[styles.outlineButton, { borderColor: theme.tint }]}
               onPress={() =>
                 router.push({
                   pathname: '/group/[id]/content',
                   params: { id: groupId },
                 })
               }
-
             >
-              <Text style={styles.outlineButtonText}>View Submissions</Text>
+              <Text style={[styles.outlineButtonText, { color: theme.tint }]}>View Submissions</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={styles.filledButton}
+              style={[styles.filledButton, { backgroundColor: theme.tint }]}
               onPress={() =>
                 router.push({
                   pathname: '/group/[id]/memoryscreen',
@@ -77,24 +80,33 @@ export default function GroupScreen() {
       </View>
 
       {/* Camera Button */}
-      <TouchableOpacity style={styles.cameraButton} onPress={() => router.push('/takephoto')}>
+      <TouchableOpacity
+        style={[styles.cameraButton, { backgroundColor: theme.tint }]}
+        onPress={() => router.push('/takephoto')}
+      >
         <Ionicons name="camera-outline" size={30} color="#fff" />
       </TouchableOpacity>
     </View>
   );
 }
 
+// --- Screen Options for dynamic title ---
+export function getScreenOptions({ params }: { params: { id: string } }) {
+  return {
+    title: `Group ${params.id}`,
+  };
+}
+
+// --- Styles ---
 const screenWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F3F3F3',
     justifyContent: 'space-between',
     padding: 16,
   },
   card: {
-    backgroundColor: '#fff',
     borderRadius: 12,
     overflow: 'hidden',
     elevation: 2,
@@ -105,7 +117,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   avatar: {
-    backgroundColor: '#d1c4e9',
     width: 40,
     height: 40,
     borderRadius: 20,
@@ -115,6 +126,7 @@ const styles = StyleSheet.create({
   },
   avatarText: {
     fontWeight: 'bold',
+    color: '#fff',
   },
   groupName: {
     fontWeight: 'bold',
@@ -122,7 +134,6 @@ const styles = StyleSheet.create({
   },
   bioText: {
     fontSize: 12,
-    color: '#777',
   },
   imagePlaceholder: {
     backgroundColor: '#d3d3d3',
@@ -169,12 +180,10 @@ const styles = StyleSheet.create({
   },
   topicDescription: {
     fontSize: 12,
-    color: '#777',
     marginBottom: 4,
   },
   policies: {
     fontSize: 12,
-    color: '#777',
     marginBottom: 12,
   },
   buttonRow: {
@@ -183,17 +192,14 @@ const styles = StyleSheet.create({
   },
   outlineButton: {
     borderWidth: 1,
-    borderColor: '#6a1b9a',
     borderRadius: 20,
     paddingVertical: 8,
     paddingHorizontal: 16,
   },
   outlineButtonText: {
-    color: '#6a1b9a',
     fontSize: 12,
   },
   filledButton: {
-    backgroundColor: '#6a1b9a',
     borderRadius: 20,
     paddingVertical: 8,
     paddingHorizontal: 16,
@@ -204,7 +210,6 @@ const styles = StyleSheet.create({
   },
   cameraButton: {
     alignSelf: 'center',
-    backgroundColor: '#6a1b9a',
     padding: 16,
     borderRadius: 30,
     position: 'absolute',
